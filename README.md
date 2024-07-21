@@ -1,1 +1,2 @@
-# This is my Local Repo
+# Delivrio
+This is my 1st semester project, in which you can fill in what items you want to courier, and based on their shape, size, value, etc., our system would define a fair price that would be required for the courier. In addition to this, the GUI allows the customer to see the current location, ETA, and status of the courier, as well as many other features.
