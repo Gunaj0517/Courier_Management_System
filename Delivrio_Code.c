@@ -3,11 +3,13 @@
 #include<time.h>
 #include<math.h>
 #include<string.h>
+#include<stdbool.h>
 
 struct CustomerDetails{
     char Name[40];
     char email[30];
     char password[15];
+    char confirmpassword[15];
     char mobile[10];
     int age;
     char tracking_number[11];
@@ -50,7 +52,7 @@ char* random_number_function(char *x)
     {
         rstring[i]='0'+(rand()%10);
     }
-    rstring[10]='/0';
+    rstring[10]='\0';
     char *randomptr=rstring;
     return randomptr;
 }
@@ -76,6 +78,76 @@ void displayFrontPage() {
 void Cleardisplay() {
     system("cls"); // Clear the console screen
 }
+bool validateit(struct CustomerDetails Cust)
+{
+    bool flag;int count=0,success=0;
+    for(int i=0;Cust.Name[i]!='\0';i++)
+    {
+        if (!((Cust.Name[i]>= 'a' && Cust.Name[i] <= 'z')
+        || (Cust.Name[i]>='A' && Cust.Name[i]<= 'Z'))) {
+
+			printf("\nPlease enter the valid Name!\n");
+			flag = 0;
+			return flag;
+    }
+    if (flag==1)
+    {
+        for(int i=0;Cust.email[i]!='\0';i++){
+            if(Cust.Name[i]== '&'||Cust.Name[i]== '&')
+                count++;
+        }
+        if(count>=2 && strlen(Cust.email)>8)
+        {
+            //strcmp --> gives (0) when both string are equal
+            if(!strcmp(Cust.password,Cust.confirmpassword))
+            {
+                if(strlen(Cust.password)>=8 && strlen(Cust.password)<15)
+                {
+                    int caps = 0,small = 0,numbers = 0,special = 0;
+                    for (i = 0; Cust.password[i] != '\0'; i++) {   
+                        if (Cust.password[i]>= 'A'&& Cust.password[i]<= 'Z')
+							caps++;
+						else if (Cust.password[i]>= 'a'&& Cust.password[i] <= 'z')
+							small++;
+						else if (Cust.password[i]>= '0'&& Cust.password[i] <= '9')
+							numbers++;
+						else if (Cust.password[i] == '@'|| Cust.password[i] == '&'||Cust.password[i] == '#'||       Cust.password[i] == '*'||Cust.password[i]=='$')
+							special++;
+                    }
+                    if (caps >= 1 && small >= 1&& numbers >= 1 && special >= 1) {
+                        if(Cust.age>0)
+                        {
+                            if(strlen(Cust.mobile)==10)
+                            {
+                                for(i = 0; i < 10; i++) {
+                                    if (Cust.mobile[i] >= '0'&& Cust.mobile[i] <= '9'){
+										success = 1;
+								    }
+								    else {
+										printf("\n\nPlease Enter valid mobile number\n\n");
+										SignUp_Customer(Cust);
+										break;
+                                    }
+                                }
+                                if(success==1)
+                                    return 1;
+                                }
+                            }
+                            else{
+                                printf("Enter valid age\n");
+                                SignUp_Customer(Cust);
+                            }   
+                        }
+
+                    }
+                    else{
+                        
+                    }
+                }
+            }
+        }
+    }
+}
 void SignUp_Customer(struct CustomerDetails Cust)
 {
     yellow();
@@ -90,7 +162,9 @@ void SignUp_Customer(struct CustomerDetails Cust)
     fgets(Cust.email,sizeof(Cust.email),stdin);
     printtf("Enter your Password: ");
     fgets(Cust.password,sizeof(Cust.password),stdin);
-    
+    printtf("Confirm your Password: ");
+    fgets(Cust.confirmpassword,sizeof(Cust.confirmpassword),stdin);
+    bool check=validateit(Cust);
 
 }
 void SignIn_Customer()
@@ -109,11 +183,12 @@ int main()
     blue();
     scanf("%d",&ch);
     reset();
+    struct CustomerDetails Customer;
     switch(ch)
     {
         case 1:
             Cleardisplay();
-            SignUp_Customer();
+            SignUp_Customer(Customer);
             break;
         case 2:
             Cleardisplay();
