@@ -78,22 +78,23 @@ void displayFrontPage() {
 void Cleardisplay() {
     system("cls"); // Clear the console screen
 }
+void SignUp_Customer(struct CustomerDetails Cust);
 bool validateit(struct CustomerDetails Cust)
 {
-    bool flag;int count=0,success=0;
+    bool flag=1;int count=0,success=0;
     for(int i=0;Cust.Name[i]!='\0';i++)
     {
-        if (!((Cust.Name[i]>= 'a' && Cust.Name[i] <= 'z')
-        || (Cust.Name[i]>='A' && Cust.Name[i]<= 'Z'))) {
-
+        if (!((Cust.Name[i]>= 'a' && Cust.Name[i] <= 'z') || (Cust.Name[i]>='A' && Cust.Name[i]<= 'Z')||(Cust.Name[i]==32))) 
+        {
 			printf("\nPlease enter the valid Name!\n");
 			flag = 0;
 			return flag;
+        }
     }
     if (flag==1)
     {
         for(int i=0;Cust.email[i]!='\0';i++){
-            if(Cust.Name[i]== '&'||Cust.Name[i]== '&')
+            if(Cust.email[i]== '&'||Cust.email[i]== '.')
                 count++;
         }
         if(count>=2 && strlen(Cust.email)>8)
@@ -101,17 +102,17 @@ bool validateit(struct CustomerDetails Cust)
             //strcmp --> gives (0) when both string are equal
             if(!strcmp(Cust.password,Cust.confirmpassword))
             {
-                if(strlen(Cust.password)>=8 && strlen(Cust.password)<15)
+                if(strlen(Cust.password)>=8 && strlen(Cust.password)<=15)
                 {
                     int caps = 0,small = 0,numbers = 0,special = 0;
-                    for (i = 0; Cust.password[i] != '\0'; i++) {   
+                    for (int i = 0; Cust.password[i] != '\0'; i++) {   
                         if (Cust.password[i]>= 'A'&& Cust.password[i]<= 'Z')
 							caps++;
 						else if (Cust.password[i]>= 'a'&& Cust.password[i] <= 'z')
 							small++;
 						else if (Cust.password[i]>= '0'&& Cust.password[i] <= '9')
 							numbers++;
-						else if (Cust.password[i] == '@'|| Cust.password[i] == '&'||Cust.password[i] == '#'||       Cust.password[i] == '*'||Cust.password[i]=='$')
+						else if (Cust.password[i] == '@'|| Cust.password[i] == '&'||Cust.password[i] == '#'|| Cust.password[i] == '*'||Cust.password[i]=='$')
 							special++;
                     }
                     if (caps >= 1 && small >= 1&& numbers >= 1 && special >= 1) {
@@ -119,7 +120,7 @@ bool validateit(struct CustomerDetails Cust)
                         {
                             if(strlen(Cust.mobile)==10)
                             {
-                                for(i = 0; i < 10; i++) {
+                                for(int i = 0; i < 10; i++) {
                                     if (Cust.mobile[i] >= '0'&& Cust.mobile[i] <= '9'){
 										success = 1;
 								    }
@@ -130,7 +131,7 @@ bool validateit(struct CustomerDetails Cust)
                                     }
                                 }
                                 if(success==1)
-                                    return 1;
+                                    return true;
                                 }
                             }
                             else{
@@ -138,34 +139,65 @@ bool validateit(struct CustomerDetails Cust)
                                 SignUp_Customer(Cust);
                             }   
                         }
-
+                        else{
+                            printf("\n\nPlease Enter a strong password \nYour password must at least one uppercase letter , lowercase letter, number \nand a special character\n\n ");
+						    SignUp_Customer(Cust);
+                        }
                     }
-                    else{
-                        
-                    }
+                    else {
+					printf("\nYour Password is very short\n");
+                    printf("Length must between 8 to 12\n\n");
+					SignUp_Customer(Cust);
+				    }
                 }
+                else {
+				printf("\nPassword Mismatch\n\n");
+				SignUp_Customer(Cust);
+			    }
             }
+            else {
+			printf("\nPlease Enter Valid E-Mail\n\n");
+			SignUp_Customer(Cust);
+		    }
         }
     }
-}
 void SignUp_Customer(struct CustomerDetails Cust)
 {
     yellow();
-    printf("Welcome to Delivr.io, Please Enter your Details for Signing Up:\n");
-    printtf("Enter your Name: ");
-    fgets(Cust.Name,sizeof(Cust.Name),stdin);
-    printtf("Enter your Age: ");
-    fgets(Cust.age,sizeof(Cust.age),stdin);
-    printtf("Enter your Mobile Number wihtoud country code: ");
-    fgets(Cust.mobile,sizeof(Cust.mobile),stdin);
-    printtf("Enter your Email: ");
-    fgets(Cust.email,sizeof(Cust.email),stdin);
-    printtf("Enter your Password: ");
-    fgets(Cust.password,sizeof(Cust.password),stdin);
-    printtf("Confirm your Password: ");
-    fgets(Cust.confirmpassword,sizeof(Cust.confirmpassword),stdin);
-    bool check=validateit(Cust);
-
+    printf("Welcome to Delivr.io, Please Enter your Details for Signing Up:\n\n");
+    printf("Enter your Name: ");
+    fflush(stdin);
+    fgets(Cust.Name, sizeof(Cust.Name), stdin);
+    Cust.Name[strcspn(Cust.Name, "\n")] = 0; 
+    // We are using strcspn() to remove \n character caused because of fgets.
+    printf("Enter your Age: ");
+    scanf("%d", &Cust.age);
+    printf("Enter your Mobile Number without country code: ");
+    fflush(stdin);
+    fgets(Cust.mobile, sizeof(Cust.mobile), stdin);
+    Cust.mobile[strcspn(Cust.mobile, "\n")] = 0; 
+    printf("Enter your Email: ");
+    fflush(stdin);
+    fgets(Cust.email, sizeof(Cust.email), stdin);
+    Cust.email[strcspn(Cust.email, "\n")] = 0; 
+    printf("Enter your Password: ");
+    fflush(stdin);
+    fgets(Cust.password, sizeof(Cust.password), stdin);
+    Cust.password[strcspn(Cust.password, "\n")] = 0; 
+    printf("Confirm your Password: ");
+    fflush(stdin);
+    fgets(Cust.confirmpassword, sizeof(Cust.confirmpassword), stdin);
+    Cust.confirmpassword[strcspn(Cust.confirmpassword, "\n")] = 0; 
+    reset();
+    bool check = validateit(Cust);
+    if(check==true)
+    {
+        Cleardisplay();
+        red();
+        printf("New account creation is in process!\n");
+        reset();
+        return;
+    }
 }
 void SignIn_Customer()
 {}
