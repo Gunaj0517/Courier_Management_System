@@ -5,8 +5,8 @@
 #include<string.h>
 
 struct CustomerDetails{
-    char Name[30];
-    char email[40];
+    char Name[40];
+    char email[30];
     char password[15];
     char mobile[10];
     int age;
@@ -76,8 +76,23 @@ void displayFrontPage() {
 void Cleardisplay() {
     system("cls"); // Clear the console screen
 }
-void SignUp_Customer()
-{}
+void SignUp_Customer(struct CustomerDetails Cust)
+{
+    yellow();
+    printf("Welcome to Delivr.io, Please Enter your Details for Signing Up:\n");
+    printtf("Enter your Name: ");
+    fgets(Cust.Name,sizeof(Cust.Name),stdin);
+    printtf("Enter your Age: ");
+    fgets(Cust.age,sizeof(Cust.age),stdin);
+    printtf("Enter your Mobile Number wihtoud country code: ");
+    fgets(Cust.mobile,sizeof(Cust.mobile),stdin);
+    printtf("Enter your Email: ");
+    fgets(Cust.email,sizeof(Cust.email),stdin);
+    printtf("Enter your Password: ");
+    fgets(Cust.password,sizeof(Cust.password),stdin);
+    
+
+}
 void SignIn_Customer()
 {}
 void Login_Admin()
