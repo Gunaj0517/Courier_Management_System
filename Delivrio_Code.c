@@ -300,5 +300,6 @@ int main()
             }
             break;
     }
+    reset();
     return 0;
 }
