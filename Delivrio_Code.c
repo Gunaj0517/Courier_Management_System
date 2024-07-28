@@ -79,6 +79,7 @@ void Cleardisplay() {
     system("cls"); // Clear the console screen
 }
 void SignUp_Customer(struct CustomerDetails Cust);
+void CustomersEndDisplayBox(struct CustomerDetails Cust);
 bool validateit(struct CustomerDetails Cust)
 {
     bool flag=1;int count=0,success=0;
@@ -194,8 +195,9 @@ void SignUp_Customer(struct CustomerDetails Cust)
     {
         Cleardisplay();
         red();
-        printf("New account creation is in process!\n");
+        printf("Account creation Successful.\nWelcome %s",Cust.Name);
         reset();
+        CustomersEndDisplayBox(Cust);
         return;
     }
 }
@@ -203,6 +205,52 @@ void SignIn_Customer()
 {}
 void Login_Admin()
 {}
+void bookCourier()
+{}
+void trackYourOrder()
+{}
+void history()
+{}
+void contactUs()
+{}
+void exitFunction()
+{}
+
+void CustomersEndDisplayBox(struct CustomerDetails Cust)
+{
+    yellow();
+    printf("\nHere is the Services you can avail:\n");
+    reset();
+    green();
+    printf("1)Book a Courier Service:\n2)Track your Couriers\n3)History/See your Previous Orders\n4)Contact us\n5)Exit");
+    reset();
+    yellow();
+    int c;printf("\nEnter the number according to your choice or need: ");
+    scanf("%d",&c);
+    switch(c)
+    {
+        case 1:
+            bookCourier();
+            break;
+        case 2:
+            trackYourOrder();
+            break;
+        case 3:
+            history();
+            break;
+        case 4:
+            contactUs();
+            break;
+        case 5:
+            exitFunction();
+            break;
+        default:
+            Cleardisplay();
+            printf("Wrong Choice, Enter again.");
+            CustomersEndDisplayBox(Cust);
+            break;
+    }
+}
 int main()
 {
     displayFrontPage();
